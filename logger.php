@@ -4,11 +4,11 @@ namespace Idearia;
 /**
  * Simple logger class.
  *
- * Simple class with static methods & properties that:
- *   - Keeps track of log entries.
- *   - Optionally writes log entries in real-time to file or to screen.
- *   - Optionally dumps the log to file in one go at any time.
- *   - Keeps track of timings with time() and timeEnd() methods, Javascript style.
+ * Simple class with static methods & properties to:
+ *   - Keep track of log entries.
+ *   - Keep track of timings with time() and timeEnd() methods, Javascript style.
+ *   - Optionally write log entries in real-time to file or to screen.
+ *   - Optionally dump the log to file in one go at any time.
  * 
  * Log entries can be added with any of the following methods:
  *  - info( $message, $title )
@@ -16,8 +16,6 @@ namespace Idearia;
  *  - warning( $message, $title )
  *  - error( $message, $title )
  * 
- * Optionally prints the log entries to file or to screen as they are added.
- *
  * For example, the following code
  *  > Logger::info( "an informational message intended for the user, ex: program started" );
  *  > Logger::debug( "a diagnostic message intended for the developer, ex: variable value = false" );
@@ -39,7 +37,7 @@ namespace Idearia;
  * To overwrite the log file at every run of the script:
  *  > Logger::$log_file_append = false;
  *
- * To stop printing to STDOUT:
+ * To prevent printing to STDOUT:
  * > Logger::$print_log = false;
  *
  * Note: the function uses the $logger_ready property to understand whether to load
