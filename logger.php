@@ -172,8 +172,6 @@ class Logger {
      */
     public static function timeEnd( string $name ) {
 
-        Logger::info('Products imported in ' .$time. ' seconds', "Load time" );
-
         if ( isset( self::$time_tracking[ $name ] ) ) {
             $start = self::$time_tracking[ $name ];
             $end = microtime( true );
