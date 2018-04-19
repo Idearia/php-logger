@@ -176,7 +176,7 @@ class Logger {
             $start = self::$time_tracking[ $name ];
             $end = microtime( true );
             $elapsed_time = number_format( ( $end - $start), 2 );
-            unset( $time_tracking[ $name] );
+            unset( self::$time_tracking[ $name] );
             self::add( "$elapsed_time seconds", "'$name' took", "timing" );
             return true;
         }
