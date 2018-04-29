@@ -294,6 +294,8 @@ class Logger {
      * you should use the real-time logging option, that is, the $write_log or
      * $print_log options.
      *
+     * The method format_log_entry() is used to format the log.
+     *
      * @param {string} $file_path - Absolute path of the output file. If empty,
      * will use the class property $log_file_path.
      */
@@ -315,6 +317,24 @@ class Logger {
             
             fclose( $output_file );
         }
+    }
+    
+    
+    /**
+     * Dump the whole log to string, and return it.
+     *
+     * The method format_log_entry() is used to format the log.
+     */
+    public static function dump_to_string() {
+      
+        $output = '';
+        
+        foreach ( self::$log as $log_entry ) {
+            $log_line = self::format_log_entry( $log_entry );
+            $output .= $log_line . PHP_EOL;
+        }
+        
+        return $output;
     }
 
 }
