@@ -178,7 +178,7 @@ class Logger {
             $elapsed_time = number_format( ( $end - $start), 2 );
             unset( self::$time_tracking[ $name] );
             self::add( "$elapsed_time seconds", "'$name' took", "timing" );
-            return true;
+            return $elapsed_time;
         }
         else {
             return false;
