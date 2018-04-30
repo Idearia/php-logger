@@ -231,7 +231,7 @@ class Logger {
         if ( ! empty( $log_entry ) ) {
 
             /* Make sure the log entry is stringified */
-            array_map( function( $v ) { return print_r( $v, true ); }, $log_entry );
+            $log_entry = array_map( function( $v ) { return print_r( $v, true ); }, $log_entry );
         
             /* Build a line of the pretty log */
             $log_line .= date( 'c', $log_entry['timestamp'] ) . " ";
