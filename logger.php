@@ -155,7 +155,7 @@ class Logger {
 
         if ( ! isset( self::$time_tracking[ $name ] ) ) {
             self::$time_tracking[ $name ] = microtime( true );
-            return true;
+            return self::$time_tracking[ $name ];
         }
         else {
             return false;
