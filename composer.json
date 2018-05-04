@@ -3,21 +3,7 @@
     "description": "Simple logger class for PHP with time tracking",
     "keywords": ["log", "logging", "time-tracking"],
     "type": "library",
-    "license": "GPL3",
-    "authors": [
-        {
-            "name": "Guido Walter Pettinari",
-            "email": "guido.pettinari@idearia.it",
-            "homepage": "https://www.idearia.it",
-            "role": "Developer"
-        },
-        {
-            "name": "Alex Bostan",
-            "email": "alex.bostan@idearia.it",
-            "homepage": "https://www.idearia.it",
-            "role": "Developer"
-        }
-    ],
+    "license": "GPL-3.0-or-later",
     "homepage": "https://github.com/Idearia/php-logger",
     "require": {
         "php": "^7.0"
