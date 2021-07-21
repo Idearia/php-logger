@@ -11,22 +11,25 @@ namespace Idearia;
  *   - Optionally dump the log to file in one go at any time.
  * 
  * Log entries can be added with any of the following methods:
- *  - info( $message, $title )
- *  - debug( $message, $title )
- *  - warning( $message, $title )
- *  - error( $message, $title )
+ *  - info( $message, $title = '' )      // an informational message intended for the user
+ *  - debug( $message, $title = '' )     // a diagnostic message intended for the developer
+ *  - warning( $message, $title = '' )   // a warning that something might go wrong
+ *  - error( $message, $title = '' )     // explain why the program is going to crash
+ * The $title argument is optional; if present, it will be
+ * prepended to the message: "$title => $message'.
  * 
  * For example, the following code
- *  > Logger::info( "an informational message intended for the user, ex: program started" );
- *  > Logger::debug( "a diagnostic message intended for the developer, ex: variable value = false" );
- *  > Logger::warning( "a warning that something might go wrong, ex: variable not set, something bad might happen" );
- *  > Logger::error( "explain why the program is going to crash, ex: file not found, exiting" );
+ *  > Logger::info( "program started" );
+ *  > Logger::debug( "variable x is false" );
+ *  > Logger::warning( "variable not set, something bad might happen" );
+ *  > Logger::error( "file not found, exiting" );
  * will print to STDOUT the following lines:
- *  $ 2018-04-09T15:17:03+02:00 [INFO] : simple log line 
- *  $ 2018-04-09T15:17:03+02:00 [WARNING] : log line title => log line content
- *  $ 2018-04-09T15:17:03+02:00 [ERROR] : error without title 
+ *  $ 2021-07-21T11:11:03+02:00 [INFO] : program started
+ *  $ 2021-07-21T11:11:03+02:00 [DEBUG] : variable x is false
+ *  $ 2021-07-21T11:11:03+02:00 [WARNING] : variable not set, something bad might happen
+ *  $ 2021-07-21T11:11:03+02:00 [ERROR] : file not found, exiting
  *
- * To write the same to file, prepend the following line:
+ * To write to file, prepend the following line:
  *  > Logger::$write_log = true;
  *
  * To customize the log file path:

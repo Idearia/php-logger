@@ -9,30 +9,32 @@ Simple logger class to:
 
 Log entries can be added with any of the following methods:
 
-* `info( $message, $title )`
-* `debug( $message, $title )`
-* `warning( $message, $title )`
-* `error( $message, $title )`
+* `info( $message, $title = '' )`  > an informational message intended for the user
+* `debug( $message, $title = '' )` > a diagnostic message intended for the developer
+* `warning( $message, $title = '' )` > a warning that something might go wrong
+* `error( $message, $title = '' )` > explain why the program is going to crash
+
+The `$title` argument is optional; if present, it will be prepended to the message: "$title => $message".
 
 For example, the following code
 
 ```php
-Logger::info( "an informational message intended for the user, ex: program started" );
-Logger::debug( "a diagnostic message intended for the developer, ex: variable value = false" );
-Logger::warning( "a warning that something might go wrong, ex: variable not set, something bad might happen" );
-Logger::error( "explain why the program is going to crash, ex: file not found, exiting" );
+Logger::info( "program started" );
+Logger::debug( "variable x is false" );
+Logger::warning( "variable not set, something bad might happen" );
+Logger::error( "file not found, exiting" );
 ```
 
 will print to STDOUT the following lines:
 
 ```
-$> 2018-04-09T16:21:34+02:00 [INFO] : an informational message intended for the user, ex: program started
-$> 2018-04-09T16:21:34+02:00 [DEBUG] : a diagnostic message intended for the developer, ex: variable value = false
-$> 2018-04-09T16:21:34+02:00 [WARNING] : a warning that something might go wrong, ex: variable not set, something bad might happen
-$> 2018-04-09T16:21:34+02:00 [ERROR] : explain why the program is going to crash, ex: file not found, exiting
+$> 2021-07-21T11:11:03+02:00 [INFO] : program started
+$> 2021-07-21T11:11:03+02:00 [DEBUG] : variable x is false
+$> 2021-07-21T11:11:03+02:00 [WARNING] : variable not set, something bad might happen
+$> 2021-07-21T11:11:03+02:00 [ERROR] : file not found, exiting
 ```
 
-To write the same output to file, prepend the following line:
+To also write to file, prepend the following line:
 
 ```php
 Logger::$write_log = true;
