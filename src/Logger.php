@@ -4,52 +4,13 @@ namespace Idearia;
 /**
  * Simple logger class.
  *
- * Simple class with static methods & properties to:
- *   - Keep track of log entries.
- *   - Keep track of timings with time() and timeEnd() methods, Javascript style.
- *   - Optionally write log entries in real-time to file or to screen.
- *   - Optionally dump the log to file in one go at any time.
- * 
  * Log entries can be added with any of the following methods:
- *  - info( $message, $title = '' )      // an informational message intended for the user
- *  - debug( $message, $title = '' )     // a diagnostic message intended for the developer
- *  - warning( $message, $title = '' )   // a warning that something might go wrong
- *  - error( $message, $title = '' )     // explain why the program is going to crash
- * The $title argument is optional; if present, it will be
- * prepended to the message: "$title => $message'.
- * 
- * For example, the following code
- *  > Logger::info( "program started" );
- *  > Logger::debug( "variable x is false" );
- *  > Logger::warning( "variable not set, something bad might happen" );
- *  > Logger::error( "file not found, exiting" );
- * will print to STDOUT the following lines:
- *  $ 2021-07-21T11:11:03+02:00 [INFO] : program started
- *  $ 2021-07-21T11:11:03+02:00 [DEBUG] : variable x is false
- *  $ 2021-07-21T11:11:03+02:00 [WARNING] : variable not set, something bad might happen
- *  $ 2021-07-21T11:11:03+02:00 [ERROR] : file not found, exiting
+ *  - Logger::info( $message, $title = '' )      // an informational message intended for the user
+ *  - Logger::debug( $message, $title = '' )     // a diagnostic message intended for the developer
+ *  - Logger::warning( $message, $title = '' )   // a warning that something might go wrong
+ *  - Logger::error( $message, $title = '' )     // explain why the program is going to crash
  *
- * To write to file, prepend the following line:
- *  > Logger::$write_log = true;
- *
- * To customize the log file path:
- *  > Logger::$log_dir = 'mylogdir';
- *  > Logger::$log_file_name = 'logname';
- *  > Logger::$log_file_extension = 'txt';
- *
- * To overwrite the log file at every run of the script:
- *  > Logger::$log_file_append = false;
- *
- * To prevent printing to STDOUT:
- * > Logger::$print_log = false;
- *
- * Note: the function uses the $logger_ready property to understand whether to load
- * the init() function. We do this to make the class work straight away, without the
- * need to instantiate it. This however can create race conditions if you are executing
- * parallel code. 
- *
- * TODO: Remove the static methods and make this an actual class that can be initialized
- * multiple times.
+ * See README.md for examples and configuration.
  */
 class Logger {
 
@@ -57,7 +18,7 @@ class Logger {
      * Incremental log, where each entry is an array with the following elements:
      *
      *  - timestamp => timestamp in seconds as returned by time()
-     *  - level => severity of the bug; one between debug, warning, error, critical
+     *  - level => severity of the bug; one between debug, info, warning, error
      *  - name => name of the log entry, optional
      *  - message => actual log message
      */
@@ -131,18 +92,18 @@ class Logger {
 
 
     /**
-     * Add a log entry with an informational message for the user.
-     */
-    public static function info( $message, $name = '' ) {
-        return self::add( $message, $name, 'info' );
-    }
-
-
-    /**
      * Add a log entry with a diagnostic message for the developer.
      */
     public static function debug( $message, $name = '' ) {
         return self::add( $message, $name, 'debug' );
+    }
+
+
+    /**
+     * Add a log entry with an informational message for the user.
+     */
+    public static function info( $message, $name = '' ) {
+        return self::add( $message, $name, 'info' );
     }
 
 
@@ -210,11 +171,11 @@ class Logger {
      * This function does not update the pretty log. 
      */
     private static function add( $message, $name = '', $level = 'debug' ) {
-        /* check if the logging level severity warrants writing this log */
-        if(self::$log_level_integers[$level] > self::$log_level_integers[self::$log_level] ){
+
+        /* Check if the logging level severity warrants writing this log */
+        if ( self::$log_level_integers[$level] > self::$log_level_integers[self::$log_level] ){
             return;
         }
-
 
         /* Create the log entry */
         $log_entry = [
