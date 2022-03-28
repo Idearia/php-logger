@@ -95,6 +95,21 @@ class Logger {
     public static $log_file_append = true;
 
     /**
+     * Set the maximum level of logging to write to logs
+     */
+    public static $log_level = 'error';
+
+    /**
+     * Map logging levels to syslog specifications, there's room for the other levels
+     */
+    private static $log_level_integers = [
+        'debug' => 7,
+        'info' => 6,
+        'warning' => 4,
+        'error' => 3
+    ];
+
+    /**
      * Absolute path of the log file, built at run time
      */
     private static $log_file_path = '';
@@ -195,6 +210,11 @@ class Logger {
      * This function does not update the pretty log. 
      */
     private static function add( $message, $name = '', $level = 'debug' ) {
+        /* check if the logging level severity warrants writing this log */
+        if(self::$log_level_integers[$level] > self::$log_level_integers[self::$log_level] ){
+            return;
+        }
+
 
         /* Create the log entry */
         $log_entry = [
