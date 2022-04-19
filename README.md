@@ -92,3 +92,13 @@ Logger::$print_log = false;
 # Parallel code caveat
 
 The class uses the static methods and internal flags (e.g. `$logger_ready`) to keep its state. We do this to make the class work straight away, without any previous configuration or the need to instantiate it. This however can create race conditions if you are executing parallel code. Please let us know if this is a problem for you, if we receive enough feedback, we will switch to a more class-like approach.
+
+# Contributing 🙂
+
+Feel free to fork the repository and make a pull request!
+
+Before sending the request, please make sure your code passes all the tests:
+
+```
+composer run test
+```

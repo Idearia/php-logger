@@ -5,10 +5,19 @@
     "type": "library",
     "license": "GPL-3.0-or-later",
     "homepage": "https://github.com/Idearia/php-logger",
+    "scripts": {
+        "test": [
+            "phpunit --testdox"
+        ]
+    },
     "require": {
-        "php": "^7.0"
+        "php": "^7.0",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {"Idearia\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"Idearia\\Tests\\": "tests/"}
     }
 }

@@ -321,4 +321,11 @@ class Logger {
         return $output;
     }
 
+    /**
+     * Empty the log
+     */
+    public static function clear_log() {
+        self::$log = [];
+    }
+
 }
