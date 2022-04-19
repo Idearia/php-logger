@@ -42,7 +42,7 @@ $> 2021-07-21T11:11:03+02:00 [ERROR] : file not found, exiting
 To customize the logger, you can either:
 
 - extend the class and override the static properties or
-- setting the static properties at runtime.
+- set the static properties at runtime.
 
 In the following examples, we adopt the second approach.
 
