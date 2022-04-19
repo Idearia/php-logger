@@ -18,7 +18,7 @@ The `$title` argument is optional; if present, it will be prepended to the messa
 
 # Quick example
 
-The following code
+The following code:
 
 ```php
 Logger::$log_level = 'debug';
@@ -36,6 +36,47 @@ $> 2021-07-21T11:11:03+02:00 [INFO] : program started
 $> 2021-07-21T11:11:03+02:00 [WARNING] : variable not set, something bad might happen
 $> 2021-07-21T11:11:03+02:00 [ERROR] : file not found, exiting
 ```
+
+# Timing
+
+You can keep track of elapsed time by using the `time()` and `timeEnd()` function.
+
+### Timing example
+
+```php
+Logger::time();
+sleep(1);
+Logger::timeEnd();
+```
+
+will print:
+
+```
+$> 2022-04-19T17:26:26+00:00 [DEBUG] : Elapsed time => 1.003163 seconds
+```
+
+### Named timers
+
+If you need to time different processes at the same time, you can use named timers.
+
+For example:
+
+```php
+Logger::time('outer timer');
+sleep(1);
+Logger::time('inner timer');
+sleep(1);
+Logger::timeEnd('inner timer');
+Logger::timeEnd('outer timer');
+```
+
+will print:
+
+```
+$> 2022-04-19T17:32:15+00:00 [DEBUG] : Elapsed time for 'inner timer' => 1.002268 seconds
+$> 2022-04-19T17:32:15+00:00 [DEBUG] : Elapsed time for 'outer timer' => 2.006117 seconds
+```
+
 
 # Options
 

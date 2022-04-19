@@ -61,6 +61,11 @@ class Logger {
     public static $log_level = 'error';
 
     /**
+     * Name for the default timer
+     */
+    public static $default_timer = 'timer';
+
+    /**
      * Map logging levels to syslog specifications, there's room for the other levels
      */
     private static $log_level_integers = [
@@ -130,7 +135,11 @@ class Logger {
      * Returns the start time or false if a time tracker with the same name
      * exists
      */
-    public static function time( string $name ) {
+    public static function time( string $name = null ) {
+
+        if ( $name === null ) {
+            $name = self::$default_timer;
+        }
 
         if ( ! isset( self::$time_tracking[ $name ] ) ) {
             self::$time_tracking[ $name ] = microtime( true );
@@ -149,14 +158,25 @@ class Logger {
      * Returns the total time elapsed for the given time-tracker, or false if the
      * time tracker is not found.
      */
-    public static function timeEnd( string $name ) {
+    public static function timeEnd( string $name = null, int $decimals = 6, $level = 'debug' ) {
+
+        $is_default_timer = $name === null;
+
+        if ( $is_default_timer ) {
+            $name = self::$default_timer;
+        }
 
         if ( isset( self::$time_tracking[ $name ] ) ) {
             $start = self::$time_tracking[ $name ];
             $end = microtime( true );
-            $elapsed_time = number_format( ( $end - $start), 2 );
-            unset( self::$time_tracking[ $name] );
-            self::add( "$elapsed_time seconds", "'$name' took", "timing" );
+            $elapsed_time = number_format( ( $end - $start), $decimals );
+            unset( self::$time_tracking[ $name ] );
+            if ( ! $is_default_timer ) {
+                self::add( "$elapsed_time seconds", "Elapsed time for '$name'", $level );
+            }
+            else {
+                self::add( "$elapsed_time seconds", "Elapsed time", $level );
+            }
             return $elapsed_time;
         }
         else {

@@ -64,4 +64,46 @@ class LoggerTest extends TestCase
 
         $this->assertSame( '', $result );
     }
+
+    public function testSingleTimer()
+    {
+        $seconds = 0.5;
+
+        $microSeconds = $seconds * 1e6;
+        Logger::$log_level = 'debug';
+        Logger::time( 'Testing the timing' );
+        usleep($microSeconds);
+        $result = Logger::timeEnd( 'Testing the timing', 6, 'debug' );
+        
+        $this->assertEqualsWithDelta($seconds, $result, 0.01);
+    }
+ 
+    public function testMultipleTimers()
+    {
+        $seconds = 1;
+
+        Logger::$log_level = 'debug';
+        Logger::time('outer timer');
+        sleep($seconds);
+        Logger::time('inner timer');
+        sleep($seconds);
+        $result_2 = Logger::timeEnd('inner timer', 6, 'debug' );
+        $result_1 = Logger::timeEnd('outer timer', 6, 'debug' );
+        
+        $this->assertEqualsWithDelta(2*$seconds, $result_1, 0.01);
+        $this->assertEqualsWithDelta($seconds, $result_2, 0.01);
+    }
+
+    public function testTimingWithDefaultParameters()
+    {
+        $seconds = 1;
+
+        $microSeconds = $seconds * 1e6;
+        Logger::$log_level = 'debug';
+        Logger::time();
+        usleep($microSeconds);
+        $result = Logger::timeEnd();
+
+        $this->assertEqualsWithDelta($seconds, $result, 0.01);
+    }
 }
