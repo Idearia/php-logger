@@ -100,7 +100,7 @@ class Logger {
      * Add a log entry with a diagnostic message for the developer.
      */
     public static function debug( $message, $name = '' ) {
-        return self::add( $message, $name, 'debug' );
+        return static::add( $message, $name, 'debug' );
     }
 
 
@@ -108,7 +108,7 @@ class Logger {
      * Add a log entry with an informational message for the user.
      */
     public static function info( $message, $name = '' ) {
-        return self::add( $message, $name, 'info' );
+        return static::add( $message, $name, 'info' );
     }
 
 
@@ -116,7 +116,7 @@ class Logger {
      * Add a log entry with a warning message.
      */
     public static function warning( $message, $name = '' ) {
-        return self::add( $message, $name, 'warning' );
+        return static::add( $message, $name, 'warning' );
     }
 
 
@@ -125,7 +125,7 @@ class Logger {
      * script termination.
      */
     public static function error( $message, $name = '' ) {
-        return self::add( $message, $name, 'error' );
+        return static::add( $message, $name, 'error' );
     }
 
 
@@ -138,12 +138,12 @@ class Logger {
     public static function time( string $name = null ) {
 
         if ( $name === null ) {
-            $name = self::$default_timer;
+            $name = static::$default_timer;
         }
 
-        if ( ! isset( self::$time_tracking[ $name ] ) ) {
-            self::$time_tracking[ $name ] = microtime( true );
-            return self::$time_tracking[ $name ];
+        if ( ! isset( static::$time_tracking[ $name ] ) ) {
+            static::$time_tracking[ $name ] = microtime( true );
+            return static::$time_tracking[ $name ];
         }
         else {
             return false;
@@ -163,19 +163,19 @@ class Logger {
         $is_default_timer = $name === null;
 
         if ( $is_default_timer ) {
-            $name = self::$default_timer;
+            $name = static::$default_timer;
         }
 
-        if ( isset( self::$time_tracking[ $name ] ) ) {
-            $start = self::$time_tracking[ $name ];
+        if ( isset( static::$time_tracking[ $name ] ) ) {
+            $start = static::$time_tracking[ $name ];
             $end = microtime( true );
             $elapsed_time = number_format( ( $end - $start), $decimals );
-            unset( self::$time_tracking[ $name ] );
+            unset( static::$time_tracking[ $name ] );
             if ( ! $is_default_timer ) {
-                self::add( "$elapsed_time seconds", "Elapsed time for '$name'", $level );
+                static::add( "$elapsed_time seconds", "Elapsed time for '$name'", $level );
             }
             else {
-                self::add( "$elapsed_time seconds", "Elapsed time", $level );
+                static::add( "$elapsed_time seconds", "Elapsed time", $level );
             }
             return $elapsed_time;
         }
@@ -193,7 +193,7 @@ class Logger {
     private static function add( $message, $name = '', $level = 'debug' ) {
 
         /* Check if the logging level severity warrants writing this log */
-        if ( self::$log_level_integers[$level] > self::$log_level_integers[self::$log_level] ){
+        if ( static::$log_level_integers[$level] > static::$log_level_integers[static::$log_level] ){
             return;
         }
 
@@ -206,17 +206,17 @@ class Logger {
         ];
 
         /* Add the log entry to the incremental log */
-        self::$log[] = $log_entry;
+        static::$log[] = $log_entry;
 
         /* Initialize the logger if it hasn't been done already */
-        if ( ! self::$logger_ready ) {
-            self::init();
+        if ( ! static::$logger_ready ) {
+            static::init();
         }
 
         /* Write the log to output, if requested */
-        if ( self::$logger_ready && count( self::$output_streams ) > 0 ) {
-            $output_line = self::format_log_entry( $log_entry ) . PHP_EOL;
-            foreach ( self::$output_streams as $key => $stream ) {
+        if ( static::$logger_ready && count( static::$output_streams ) > 0 ) {
+            $output_line = static::format_log_entry( $log_entry ) . PHP_EOL;
+            foreach ( static::$output_streams as $key => $stream ) {
                 fputs( $stream, $output_line );
             }
         }
@@ -260,33 +260,33 @@ class Logger {
      */
     public static function init() {
 
-        if ( ! self::$logger_ready ) {
+        if ( ! static::$logger_ready ) {
 
             /* Print to screen */
-            if ( true === self::$print_log ) {
-                self::$output_streams[ 'stdout' ] = STDOUT;
+            if ( true === static::$print_log ) {
+                static::$output_streams[ 'stdout' ] = STDOUT;
             }
 
             /* Build log file path */
-            if ( file_exists( self::$log_dir ) ) {
-                self::$log_file_path = implode( DIRECTORY_SEPARATOR, [ self::$log_dir, self::$log_file_name ] );
-                if ( ! empty( self::$log_file_extension ) ) {
-                    self::$log_file_path .= "." . self::$log_file_extension;
+            if ( file_exists( static::$log_dir ) ) {
+                static::$log_file_path = implode( DIRECTORY_SEPARATOR, [ static::$log_dir, static::$log_file_name ] );
+                if ( ! empty( static::$log_file_extension ) ) {
+                    static::$log_file_path .= "." . static::$log_file_extension;
                 }
             }
 
             /* Print to log file */
-            if ( true === self::$write_log ) {
-                if ( file_exists( self::$log_dir ) ) {
-                    $mode = self::$log_file_append ? "a" : "w";
-                    self::$output_streams[ self::$log_file_path ] = fopen ( self::$log_file_path, $mode );
+            if ( true === static::$write_log ) {
+                if ( file_exists( static::$log_dir ) ) {
+                    $mode = static::$log_file_append ? "a" : "w";
+                    static::$output_streams[ static::$log_file_path ] = fopen ( static::$log_file_path, $mode );
                 }
             }
         }
 
         /* Now that we have assigned the output stream, this function does not need
         to be called anymore */
-        self::$logger_ready = true;
+        static::$logger_ready = true;
 
     }
 
@@ -306,16 +306,16 @@ class Logger {
     public static function dump_to_file( $file_path='' ) {
 
         if ( ! $file_path ) {
-            $file_path = self::$log_file_path;
+            $file_path = static::$log_file_path;
         }
         
         if ( file_exists( dirname( $file_path ) ) ) {
 
-            $mode = self::$log_file_append ? "a" : "w";
+            $mode = static::$log_file_append ? "a" : "w";
             $output_file = fopen( $file_path, $mode );
 
-            foreach ( self::$log as $log_entry ) {
-                $log_line = self::format_log_entry( $log_entry );
+            foreach ( static::$log as $log_entry ) {
+                $log_line = static::format_log_entry( $log_entry );
                 fwrite( $output_file, $log_line . PHP_EOL );
             }
             
@@ -333,8 +333,8 @@ class Logger {
       
         $output = '';
         
-        foreach ( self::$log as $log_entry ) {
-            $log_line = self::format_log_entry( $log_entry );
+        foreach ( static::$log as $log_entry ) {
+            $log_line = static::format_log_entry( $log_entry );
             $output .= $log_line . PHP_EOL;
         }
         
@@ -345,7 +345,7 @@ class Logger {
      * Empty the log
      */
     public static function clear_log() {
-        self::$log = [];
+        static::$log = [];
     }
 
 }
