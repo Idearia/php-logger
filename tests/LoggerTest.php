@@ -6,6 +6,11 @@ use PHPUnit\Framework\TestCase;
 
 class LoggerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        Logger::$print_log = false;
+    }
+
     protected function tearDown(): void
     {
         Logger::clear_log();
